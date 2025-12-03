@@ -13,9 +13,5 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   if (!term) redirect('/');
 
-  return (
-    <div>
-      <PostList fetchData={() => fetchPostsBySearchTerm(term)} />
-    </div>
-  );
+  return <PostList fetchData={() => fetchPostsBySearchTerm(term)} />;
 }

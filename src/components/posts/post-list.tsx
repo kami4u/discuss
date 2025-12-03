@@ -1,6 +1,7 @@
 import type { PostWithData } from '@/db/queries/posts';
 import Link from 'next/link';
 import { paths } from '@/paths';
+import { Card, CardContent, Typography, Stack } from '@mui/material';
 
 interface PostListProps {
   fetchData: () => Promise<PostWithData[]>;
@@ -15,19 +16,33 @@ export default async function PostList({ fetchData }: PostListProps) {
     }
 
     return (
-      <div key={post.id} className="border rounded p-2">
-        <Link href={paths.postShow(topicSlug, post.id)}>
-          <h3 className="text-lg font-bold">{post.title}</h3>
-          <div className="flex flex-row gap-8">
-            <p className="text-xs text-gray-400">By {post.user.name}</p>
-            <p className="text-xs text-gray-400">
-              {post._count.comments} comments
-            </p>
-          </div>
-        </Link>
-      </div>
+      <Link
+        key={post.id}
+        href={paths.postShow(topicSlug, post.id)}
+        style={{ textDecoration: 'none' }}
+      >
+        <Card sx={{ '&:hover': { boxShadow: 4 }, cursor: 'pointer' }}>
+          <CardContent>
+            <Typography
+              variant="h6"
+              component="h3"
+              sx={{ fontWeight: 'bold', mb: 1 }}
+            >
+              {post.title}
+            </Typography>
+            <Stack direction="row" spacing={4}>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                By {post.user.name}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                {post._count.comments} comments
+              </Typography>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Link>
     );
   });
 
-  return <div className="space-y-2">{renderedPosts}</div>;
+  return <Stack spacing={2}>{renderedPosts}</Stack>;
 }

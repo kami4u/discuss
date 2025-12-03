@@ -1,8 +1,6 @@
-// import type { CommentWithAuthor } from '@/db/queries/comments';
-import Image from 'next/image';
-// import { Button } from '@nextui-org/react';
 import CommentCreateForm from '@/components/comments/comment-create-form';
 import { fetchCommentsByPostId } from '@/db/queries/comments';
+import { Box, Paper, Stack, Avatar, Typography } from '@mui/material';
 
 interface CommentShowProps {
   commentId: string;
@@ -26,25 +24,29 @@ export default async function CommentShow({
   });
 
   return (
-    <div className="p-4 border mt-2 mb-1">
-      <div className="flex gap-3">
-        <Image
+    <Paper sx={{ p: 4, mt: 2, mb: 1 }}>
+      <Stack direction="row" spacing={3}>
+        <Avatar
           src={comment.user.image || ''}
           alt="user image"
-          width={40}
-          height={40}
-          className="w-10 h-10 rounded-full"
+          sx={{ width: 40, height: 40 }}
         />
-        <div className="flex-1 space-y-3">
-          <p className="text-sm font-medium text-gray-500">
-            {comment.user.name}
-          </p>
-          <p className="text-gray-900">{comment.content}</p>
-
-          <CommentCreateForm postId={comment.postId} parentId={comment.id} />
-        </div>
-      </div>
-      <div className="pl-4">{renderedChildren}</div>
-    </div>
+        <Box sx={{ flex: 1 }}>
+          <Stack spacing={3}>
+            <Typography
+              variant="body2"
+              sx={{ color: 'text.secondary', fontWeight: 500 }}
+            >
+              {comment.user.name}
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'text.primary' }}>
+              {comment.content}
+            </Typography>
+            <CommentCreateForm postId={comment.postId} parentId={comment.id} />
+          </Stack>
+        </Box>
+      </Stack>
+      <Box sx={{ pl: 4 }}>{renderedChildren}</Box>
+    </Paper>
   );
 }

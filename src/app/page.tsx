@@ -1,22 +1,28 @@
 import TopicCreateForm from '@/components/topics/topic-create-form';
 import TopicList from '@/components/topics/topic-list';
-import { Divider } from '@nextui-org/react';
+import { Divider, Stack, Box, Typography, Paper } from '@mui/material';
 import PostList from '@/components/posts/post-list';
 import { fetchTopPosts } from '@/db/queries/posts';
 
 export default function Home() {
   return (
-    <div className="grid grid-cols-4 gap-4 p-4">
-      <div className="col-span-3">
-        <h1 className="text-xl m-2">Top Posts</h1>
+    <Stack
+      direction={{ xs: 'column', md: 'row' }}
+      spacing={4}
+      sx={{ width: '100%', maxWidth: '1200px' }}
+    >
+      <Box sx={{ flex: 2 }}>
+        <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>
+          Top Posts
+        </Typography>
         <PostList fetchData={fetchTopPosts} />
-      </div>
-      <div className="border shadow py-3 px-2">
+      </Box>
+
+      <Paper sx={{ flex: 1, p: 2, minWidth: 300 }}>
         <TopicCreateForm />
-        <Divider className="my-2" />
-        <h3 className="text-lg"></h3>
+        <Divider sx={{ my: 2 }} />
         <TopicList />
-      </div>
-    </div>
+      </Paper>
+    </Stack>
   );
 }

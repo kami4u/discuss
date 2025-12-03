@@ -1,15 +1,35 @@
 'use client';
 
-import { Input } from '@nextui-org/react';
-import { useSearchParams } from 'next/navigation';
+import { Autocomplete, TextField } from '@mui/material';
 import { search } from '@/actions';
+import { useContext, type SyntheticEvent } from 'react';
+import { PostsContext } from '@/app/providers';
 
 export default function SearchInput() {
-  const searchParams = useSearchParams();
+  const posts = useContext(PostsContext);
+
+  const handleSelect = (_event: SyntheticEvent, value: string | null) => {
+    search(value);
+  };
 
   return (
-    <form action={search}>
-      <Input name="term" defaultValue={searchParams.get('term') || ''} />
-    </form>
+    <Autocomplete
+      disablePortal
+      freeSolo
+      options={posts.map((p) => p.title)}
+      sx={{ width: 300 }}
+      onChange={handleSelect}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          placeholder="Search Posts..."
+          variant="outlined"
+          size="small"
+          fullWidth
+          color="secondary"
+          name="term"
+        />
+      )}
+    />
   );
 }

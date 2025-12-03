@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@nextui-org/react';
+import { Button, CircularProgress } from '@mui/material';
 
 interface FormButtonProps {
   children: React.ReactNode;
@@ -8,7 +8,13 @@ interface FormButtonProps {
 
 export default function FormButton({ children, isLoading }: FormButtonProps) {
   return (
-    <Button type="submit" isLoading={isLoading}>
+    <Button
+      type="submit"
+      variant="contained"
+      disabled={isLoading}
+      startIcon={isLoading ? <CircularProgress size={20} /> : undefined}
+      fullWidth
+    >
       {children}
     </Button>
   );

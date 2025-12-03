@@ -1,16 +1,15 @@
 'use client';
 
-import { useActionState, startTransition } from 'react';
-
+import { useActionState, startTransition, useState } from 'react';
 import {
-  Input,
   Button,
-  Textarea,
+  TextField,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Form
-} from '@nextui-org/react';
+  Box,
+  Typography,
+  Alert,
+  Stack
+} from '@mui/material';
 import * as actions from '@/actions';
 import FormButton from '@/components/common/form-button';
 
@@ -18,6 +17,15 @@ export default function TopicCreateForm() {
   const [formState, action, isPending] = useActionState(actions.createTopic, {
     errors: {}
   });
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,41 +36,57 @@ export default function TopicCreateForm() {
   }
 
   return (
-    <Popover placement="left">
-      <PopoverTrigger>
-        <Button color="primary">Create a Topic</Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <Form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-4 p-4 w-80">
-            <h3 className="text-lg">Create a Topic</h3>
-            <Input
-              name="name"
-              label="Name"
-              labelPlacement="outside"
-              placeholder="Name"
-              isInvalid={!!formState.errors.name}
-              errorMessage={formState.errors.name?.join(', ')}
-            />
-            <Textarea
-              name="description"
-              label="Description"
-              labelPlacement="outside"
-              placeholder="Describe your topic"
-              isInvalid={!!formState.errors.description}
-              errorMessage={formState.errors.description?.join(', ')}
-            />
+    <>
+      <Button variant="contained" color="primary" onClick={handleOpen}>
+        Create a Topic
+      </Button>
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left'
+        }}
+      >
+        <Box sx={{ p: 4, width: 320 }}>
+          <form onSubmit={handleSubmit}>
+            <Stack spacing={4}>
+              <Typography variant="h6">Create a Topic</Typography>
+              <TextField
+                name="name"
+                label="Name"
+                placeholder="Name"
+                fullWidth
+                error={!!formState.errors.name}
+                helperText={formState.errors.name?.join(', ')}
+              />
+              <TextField
+                name="description"
+                label="Description"
+                placeholder="Describe your topic"
+                multiline
+                rows={4}
+                fullWidth
+                error={!!formState.errors.description}
+                helperText={formState.errors.description?.join(', ')}
+              />
 
-            {formState.errors._form ? (
-              <div className="rounded p-2 bg-red-200 border border-red-400">
-                {formState.errors._form?.join(', ')}
-              </div>
-            ) : null}
+              {formState.errors._form ? (
+                <Alert severity="error">
+                  {formState.errors._form?.join(', ')}
+                </Alert>
+              ) : null}
 
-            <FormButton isLoading={isPending}>Save</FormButton>
-          </div>
-        </Form>
-      </PopoverContent>
-    </Popover>
+              <FormButton isLoading={isPending}>Save</FormButton>
+            </Stack>
+          </form>
+        </Box>
+      </Popover>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Chip } from '@nextui-org/react';
+import { Chip, Box } from '@mui/material';
 import { db } from '@/db';
 import { paths } from '@/paths';
 
@@ -8,15 +8,29 @@ export default async function TopicList() {
 
   const renderedTopics = topics.map((topic) => {
     return (
-      <div key={topic.id}>
-        <Link href={paths.topicShow(topic.slug)}>
-          <Chip variant="shadow" color="warning">
-            {topic.slug}
-          </Chip>
-        </Link>
-      </div>
+      <Link
+        key={topic.id}
+        href={paths.topicShow(topic.slug)}
+        style={{ textDecoration: 'none' }}
+      >
+        <Chip
+          label={topic.slug}
+          color="warning"
+          variant="outlined"
+          sx={{
+            cursor: 'pointer',
+            '&:hover': { backgroundColor: 'action.hover' }
+          }}
+        />
+      </Link>
     );
   });
 
-  return <div className="flex flex-row flex-wrap gap-2">{renderedTopics}</div>;
+  return (
+    <Box
+      sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1 }}
+    >
+      {renderedTopics}
+    </Box>
+  );
 }

@@ -2,9 +2,7 @@
 
 import { redirect } from 'next/navigation';
 
-export async function search(formData: FormData) {
-    const term = formData.get('term');
-
+export async function search(term: string | null) {
     if (!term || typeof term !== 'string') redirect('/');
     redirect(`/search?term=${term}`);
 }

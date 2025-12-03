@@ -1,6 +1,7 @@
 import PostCreateForm from '@/components/posts/post-create-form';
 import PostList from '@/components/posts/post-list';
 import { fetchPostsByTopicSlug } from '@/db/queries/posts';
+import { Box, Stack, Typography } from '@mui/material';
 
 type TopicShowPageProps = {
   params: Promise<{
@@ -12,14 +13,30 @@ export default async function TopicShowPage({ params }: TopicShowPageProps) {
   const { slug } = await params;
 
   return (
-    <div className="grid grid-cols-4 gap-4 p-4">
-      <div className="col-span-3">
-        <h1 className="text-2xl font-bold mb-2">{slug}</h1>
+    <Stack
+      direction={{ xs: 'column', md: 'row' }}
+      spacing={4}
+      sx={{ width: '100%', maxWidth: '1200px' }}
+    >
+      <Box sx={{ flex: 2 }}>
+        <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>
+          {slug}
+        </Typography>
         <PostList fetchData={() => fetchPostsByTopicSlug(slug)} />
-      </div>
-      <div>
+      </Box>
+
+      <Box
+        sx={{
+          flex: 1,
+          p: 2,
+          minWidth: 300,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start'
+        }}
+      >
         <PostCreateForm slug={slug} />
-      </div>
-    </div>
+      </Box>
+    </Stack>
   );
 }

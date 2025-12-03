@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useActionState } from "react";
-import { useEffect, useRef, useState } from "react";
-import { Textarea, Button } from "@nextui-org/react";
-import FormButton from "@/components/common/form-button";
-import * as actions from "@/actions";
+import { useActionState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { TextField, Button, Alert, Stack } from '@mui/material';
+import FormButton from '@/components/common/form-button';
+import * as actions from '@/actions';
 
 interface CommentCreateFormProps {
   postId: string;
@@ -15,7 +15,7 @@ interface CommentCreateFormProps {
 export default function CommentCreateForm({
   postId,
   parentId,
-  startOpen,
+  startOpen
 }: CommentCreateFormProps) {
   const [open, setOpen] = useState(startOpen);
   const ref = useRef<HTMLFormElement | null>(null);
@@ -36,29 +36,30 @@ export default function CommentCreateForm({
 
   const form = (
     <form action={action} ref={ref}>
-      <div className="space-y-2 px-1">
-        <Textarea
+      <Stack spacing={2} sx={{ px: 1 }}>
+        <TextField
           name="content"
           label="Reply"
           placeholder="Enter your comment"
-          isInvalid={!!formState.errors.content}
-          errorMessage={formState.errors.content?.join(", ")}
+          multiline
+          rows={4}
+          fullWidth
+          error={!!formState.errors.content}
+          helperText={formState.errors.content?.join(', ')}
         />
 
         {formState.errors._form ? (
-          <div className="p-2 bg-red-200 border rounded border-red-400">
-            {formState.errors._form?.join(", ")}
-          </div>
+          <Alert severity="error">{formState.errors._form?.join(', ')}</Alert>
         ) : null}
 
         <FormButton isLoading={isPending}>Create Comment</FormButton>
-      </div>
+      </Stack>
     </form>
   );
 
   return (
     <div>
-      <Button size="sm" variant="light" onClick={() => setOpen(!open)}>
+      <Button size="small" variant="text" onClick={() => setOpen(!open)}>
         Reply
       </Button>
       {open && form}

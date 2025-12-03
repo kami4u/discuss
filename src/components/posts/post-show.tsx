@@ -1,5 +1,6 @@
 import { db } from '@/db';
 import { notFound } from 'next/navigation';
+import { Box, Typography, Paper } from '@mui/material';
 
 interface PostShowProps {
   postId: string;
@@ -17,9 +18,13 @@ export default async function PostShow({ postId }: PostShowProps) {
     notFound();
   }
   return (
-    <div className="m-4">
-      <h1 className="text-2xl font-bold my-2">{post.title}</h1>
-      <p className="p-4 border rounded">{post.content}</p>
-    </div>
+    <Box sx={{ m: 4 }}>
+      <Typography variant="h4" sx={{ fontWeight: 'bold', my: 2 }}>
+        {post.title}
+      </Typography>
+      <Paper sx={{ p: 4 }}>
+        <Typography variant="body1">{post.content}</Typography>
+      </Paper>
+    </Box>
   );
 }

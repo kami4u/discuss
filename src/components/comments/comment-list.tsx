@@ -1,5 +1,6 @@
 import CommentShow from '@/components/comments/comment-show';
 import { fetchCommentsByPostId } from '@/db/queries/comments';
+import { Stack, Typography } from '@mui/material';
 
 interface CommentListProps {
   postId: string;
@@ -17,9 +18,11 @@ export default async function CommentList({ postId }: CommentListProps) {
   });
 
   return (
-    <div className="space-y-3">
-      <h1 className="text-lg font-bold">All {comments.length} comments</h1>
+    <Stack spacing={3}>
+      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+        All {comments.length} comments
+      </Typography>
       {renderedComments}
-    </div>
+    </Stack>
   );
 }

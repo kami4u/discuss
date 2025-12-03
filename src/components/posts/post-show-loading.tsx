@@ -1,16 +1,18 @@
-import { Skeleton } from '@nextui-org/react';
+import { Skeleton, Box, Paper, Stack } from '@mui/material';
 
 export default function PostShowLoading() {
   return (
-    <div className="m-4">
-      <div className="my-2">
-        <Skeleton className="h-8 w-48" />
-      </div>
-      <div className="p-4 border rounded space-y-2">
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-6 w-32" />
-      </div>
-    </div>
+    <Box sx={{ m: 4 }}>
+      <Box sx={{ my: 2 }}>
+        <Skeleton variant="text" width={200} height={32} />
+      </Box>
+      <Paper sx={{ p: 4 }}>
+        <Stack spacing={2}>
+          <Skeleton variant="text" width={150} height={24} />
+          <Skeleton variant="text" width={150} height={24} />
+          <Skeleton variant="text" width={150} height={24} />
+        </Stack>
+      </Paper>
+    </Box>
   );
 }
